@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   resources :rooms do
     resources :orders
   end
+  match '/search_room', to: 'rooms#search_room', via: :post
 end
