@@ -9,11 +9,13 @@ class RoomsController < ApplicationController
     # if room_date_info.empty?
     #   @rooms = Room.all
     # else
-    @rooms = Room.includes(:orders).where(
+    @rooms = []
+    @rooms << Room.includes(:orders).where(
       "orders.start_date >= ? or orders.end_date <= ?", room_date_info[:end_date], room_date_info[:start_date]
       ).references(:orders)
-    # end
-    json_response(@rooms)
+    @rooms << Room.includes(:orders).where( :orders => { :room_id => nil } )
+    
+    json_response(@rooms.flatten)
   end
 
   # GET /rooms
